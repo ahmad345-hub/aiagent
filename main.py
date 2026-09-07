@@ -15,6 +15,10 @@ client = OpenAI(
 )
 
 
+        
+
+
+
 def main():
     response = client.chat.completions.create(
         model="openrouter/free",
@@ -26,7 +30,14 @@ def main():
         ],
     )
 
-    print(response.choices[0].message.content)
+    if response.usage is None:
+        raise RuntimeError("Response usage is missing")
+
+    print(f"Prompt tokens: {response.usage.prompt_tokens}")
+    print(f"Response tokens: {response.usage.completion_tokens}")
+
+    print(response.choices[0].message.content)     
+
 
 
 if __name__ == "__main__":
